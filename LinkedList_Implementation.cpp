@@ -7,12 +7,14 @@ struct Node
   struct Node *next;
 };
 
-struct Node *head = NULL, *temp = NULL;
+struct Node *head = NULL;
 
 void nodeCreation(){
   int choice = 1;
+  
+  struct Node * temp = NULL;
+
   while(choice == 1){
-    
     struct Node *newNode = (struct Node*) malloc(sizeof(struct Node));
     printf("Enter the data for the new node: ");
     scanf("%d", &newNode->data);
@@ -33,24 +35,107 @@ void nodeCreation(){
 
 void displayList()
 {
+  struct Node * temp = NULL;
   temp = head;
   while (temp != NULL)
   {
-    printf("%d",temp->data);
+    printf("%d ",temp->data);
     temp = temp->next;
   }
+  printf("\n");
+}
+
+
+int getLength()
+{
+    int count = 0;
+    struct Node *temp = head;
+
+    while(temp != NULL)
+    {
+      count++;
+      temp = temp->next;   
+    }
+    return count;
 }
 
 
 //Insertion
 
-void insertAtBeginning()
+void insertAtBeginning(int data)
 {
-  
+    struct Node * newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = head;
+    head = newNode;  
 }
+
+void insertAtEnd(int data){
+  struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
+  newNode->data = data;
+  newNode->next = NULL;
+
+  if(head == NULL){
+    head = newNode;
+    return;
+  }
+  
+  struct Node * temp = NULL;
+  temp = head;
+  while(temp->next != NULL){
+    temp = temp->next;
+  }
+  temp->next = newNode;
+}
+
+
+void insertBetween(int data, int pos) {
+    int i;
+    int count = getLength();
+
+    if (pos < 1 || pos > count + 1) {
+        printf("Invalid Position\n");
+        return;
+    }
+
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    // Insert at the beginning
+    if (pos == 1) {
+        newNode->next = head;
+        head = newNode;
+        return;
+    }
+
+    // Traverse to the node just before the position
+    struct Node* temp = head;
+    for (i = 1; i < pos - 1; i++) {
+
+        temp = temp->next;
+    }
+
+    // Insert new node
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+
+
+
 
 int main()
 {
     nodeCreation();
+    displayList();
+    insertAtBeginning(5);
+    displayList();
+    insertAtEnd(6);
+    displayList();
+    insertBetween(2,1);
+    displayList();
+
+    int x = getLength();
+    printf("Length is %d" , x);
 } 
 
