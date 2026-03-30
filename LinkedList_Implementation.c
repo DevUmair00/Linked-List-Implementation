@@ -123,6 +123,86 @@ void insertBetween(int data, int pos) {
 
 
 
+//Deletion
+
+void deleteBeginning(){
+  if(head == NULL)
+  {
+    printf("Failed To Delete Empty Node");
+  }
+    struct Node *temp = head;
+    head = head->next;
+    free(temp); 
+  
+}
+
+
+void deleteEnd(){
+
+  if(head == NULL){
+    return;
+  }
+
+  if(head->next == NULL){
+    free(head);
+    head = NULL;
+    return;
+  }
+
+  struct Node *temp = head;
+  while(temp->next->next != NULL){
+    temp = temp->next;
+  }
+  free(temp->next);
+  temp->next = NULL;
+}
+
+
+void deleteValue(int key){
+  struct Node* temp = head;
+  struct Node* prev = NULL;
+
+  while(temp != NULL && temp->data != key){
+    prev = temp;
+    temp = temp->next;
+  }
+
+  if(temp == NULL) return;
+
+  prev->next = temp->next;
+  free(temp);
+}
+
+
+void deleteSpecificPos(int pos){
+  
+  if(pos< 1 || pos > getLength()){
+    printf("Failed to Access this Node.");
+    return;
+  }
+  
+  
+  struct Node *temp = head;
+  struct Node *nextNode = NULL;
+
+  if(pos == 1)
+  {
+    head = head->next;
+    free(temp);
+    return;
+  }
+
+  int count = 1;
+    while(count < pos-1){
+      temp = temp->next;
+      count++;
+    }
+  
+  nextNode = temp->next;
+  temp->next = nextNode->next;
+  free(nextNode);
+}
+
 
 int main()
 {
@@ -137,5 +217,6 @@ int main()
 
     int x = getLength();
     printf("Length is %d" , x);
+
 } 
 
